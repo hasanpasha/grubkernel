@@ -34,13 +34,6 @@ void drawc(char c) {
     }
 }
 
-void puts(const char* str) {
-    while (*str) {
-        drawc(*str);
-        str++;
-    }
-}
-
 void scroll_up() {
     for (uint16_t y = 0; y < height; y++) {
         for (uint16_t x = 0; x < width; x++) {

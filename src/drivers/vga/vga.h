@@ -7,7 +7,6 @@
 #define height 25
 
 void drawc(char c);
-void puts(const char* str);
 void scroll_up();
 void new_line();
 void reset();

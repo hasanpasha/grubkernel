@@ -9,8 +9,7 @@ BUILD_DIR=build
 ISO_ROOT_DIR=build/${OS_NAME}
 
 all: always iso
-# ${BUILD_DIR}/div.o ${BUILD_DIR}/stdio.o
-${BUILD_DIR}/kernel: ${BUILD_DIR}/boot.o ${BUILD_DIR}/vga.o ${BUILD_DIR}/kernel.o ${BUILD_DIR}/gdts.o ${BUILD_DIR}/gdt.o
+${BUILD_DIR}/kernel: ${BUILD_DIR}/boot.o ${BUILD_DIR}/vga.o ${BUILD_DIR}/kernel.o ${BUILD_DIR}/gdts.o ${BUILD_DIR}/gdt.o ${BUILD_DIR}/div.o ${BUILD_DIR}/stdio.o
 	ld -m elf_i386 -T linker.ld -o $@ $^
 
 ${BUILD_DIR}/kernel.o: ${SRC_DIR}/kernel.c
