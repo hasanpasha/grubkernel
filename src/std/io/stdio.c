@@ -8,7 +8,6 @@ void putc(char c) {
     drawc(c);
 }
 
-
 void puts(const char* str) {
     while (*str != 0){
         putc(*str);

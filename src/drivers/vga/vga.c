@@ -16,38 +16,46 @@ void drawc(char c) {
     case '\r':
         column = 0;
         break;
+    case '\b':
+        if (column == 0 && line != 0) {
+            line--;
+            column = __VGA_WIDTH__;
+        }
+        vga[line * __VGA_WIDTH__ + (--column)] = ' ' | current_color;
+        break;
     case '\t':
-        if (column == width) {
+        if (column == __VGA_WIDTH__) {
             new_line();
         }
         uint16_t tab_len = 4 - (column % 4);
         while (tab_len != 0) {
-            vga[line * width + (column++)] = ' ' | current_color;
+            vga[line * __VGA_WIDTH__ + (column++)] = ' ' | current_color;
+            tab_len--;
         }
         break;
     default:
-        if (column == width) {
+        if (column == __VGA_WIDTH__) {
             new_line();
         }
-        vga[line * width + (column++)] = c | current_color;
+        vga[line * __VGA_WIDTH__ + (column++)] = c | current_color;
         break;
     }
 }
 
 void scroll_up() {
-    for (uint16_t y = 0; y < height; y++) {
-        for (uint16_t x = 0; x < width; x++) {
-            vga[(y-1) * width + x] = vga[y * width + x];
+    for (uint16_t y = 0; y < __VGA_HEIGHT__; y++) {
+        for (uint16_t x = 0; x < __VGA_WIDTH__; x++) {
+            vga[(y-1) * __VGA_WIDTH__ + x] = vga[y * __VGA_WIDTH__ + x];
         }
     }
 
-    for (uint16_t x = 0; x < width; x++) {
-        vga[(height-1) * width + x] = ' ' | current_color;
+    for (uint16_t x = 0; x < __VGA_WIDTH__; x++) {
+        vga[(__VGA_HEIGHT__-1) * __VGA_WIDTH__ + x] = ' ' | current_color;
     }
 }
 
 void new_line() {
-    if (line < height - 1) {
+    if (line < __VGA_HEIGHT__ - 1) {
         line++;
     } else {
         scroll_up();
@@ -60,9 +68,9 @@ void reset() {
     column = 0;
     current_color = default_color;
 
-    for (uint16_t y = 0; y < height; y++) {
-        for (uint16_t x = 0; x < width; x++) {
-            vga[y * width + x] = ' ' | default_color;
+    for (uint16_t y = 0; y < __VGA_HEIGHT__; y++) {
+        for (uint16_t x = 0; x < __VGA_WIDTH__; x++) {
+            vga[y * __VGA_WIDTH__ + x] = ' ' | default_color;
         }
     }
 }

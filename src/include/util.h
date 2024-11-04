@@ -12,3 +12,4 @@ struct interrupt_registers_struct {
 
 void memset(void* dest, char value, uint32_t size);
 void out_port_b(uint16_t port, uint8_t value);
+char in_port_b(uint16_t port);

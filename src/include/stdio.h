@@ -4,7 +4,7 @@
 #include "./stdbool.h"
 #include "../drivers/vga/vga.h"
 
-// void putc(char c);
+void putc(char c);
 void puts(const char* str);
 void printf(const char* fmt, ...);
 void puts_f(const char* str);
