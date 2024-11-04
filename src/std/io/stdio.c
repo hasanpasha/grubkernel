@@ -172,7 +172,7 @@ void printf(const char* fmt, ...) {
 const char possible_chars[] = "0123456789abcdef";
 int* printf_number(int* argp, int length, bool sign, int radix, bool upper) {
     char buffer[32];
-    unsigned long long number;
+    unsigned long long number = 0;
     int number_sign = 1;
     int pos = 0;
 
@@ -221,10 +221,10 @@ int* printf_number(int* argp, int length, bool sign, int radix, bool upper) {
         break;
     }
 
+    uint32_t rem;
     do {
-        // uint32_t rem = number % radix;
+        // rem = number % radix;
         // number = number / radix;
-        uint32_t rem;
         x86_div64_32(number, radix, &number, &rem);
         buffer[pos++] = possible_chars[rem];
     } while(number > 0);

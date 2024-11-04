@@ -14,5 +14,5 @@ void kmain(void) {
     init_idt();
     printf("IDT is done\n");
 
-    printf(1/0);
+    // printf(1/0);
 }

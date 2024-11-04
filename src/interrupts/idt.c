@@ -101,7 +101,7 @@ void set_idt_gate(uint8_t num, uint32_t base, union idt_segment_selector_union s
     idt_entries[num].flags = flags.flags_value;
 }
 
-unsigned char* exception_messages[] = {
+const char* exception_messages[] = {
     "Division By Zero",
     "Debug",
     "Non Maskable Interrupt",
