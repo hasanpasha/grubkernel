@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../include/stdint.h"
 
 
@@ -7,11 +9,11 @@ struct gdt_entry_flags_struct {
     uint8_t DB : 1; // Size flag
     uint8_t G : 1;  // Granularity flag
 } __attribute__((packed));
-typedef struct gdt_entry_flags_struct gdt_entry_flags;
+typedef struct gdt_entry_flags_struct gdt_entry_flags_t;
 
 union gdt_flags_union
 {
-    uint8_t flags_value : 4;
+    uint8_t flags_value;
     struct gdt_entry_flags_struct flags;
 } __attribute__((packed));
 
@@ -24,7 +26,7 @@ struct gdt_entry_access_struct {
     uint8_t DPL: 2; // Descriptor privilege level field
     uint8_t P: 1;   // Present bit
 } __attribute__((packed));
-typedef struct gdt_entry_access_struct gdt_entry_access;
+typedef struct gdt_entry_access_struct gdt_entry_access_t;
 
 union gdt_access_union
 {
@@ -40,16 +42,15 @@ struct gdt_entry_struct
     uint8_t access;
     uint8_t limit_high : 4;
     uint8_t flags : 4;
-    // gdt_flags flags;
     uint8_t base_high;
 } __attribute__((packed));
-typedef struct gdt_entry_struct gdt_entry;
+typedef struct gdt_entry_struct gdt_entry_t;
 
 struct gdt_ptr_struct {
     uint16_t size;
     unsigned int base;
 }__attribute__((packed));
-typedef struct gdt_ptr_struct gdt_ptr;
+typedef struct gdt_ptr_struct gdt_ptr_t;
 
 struct tss_entry_struct {
     uint32_t prev_tss;

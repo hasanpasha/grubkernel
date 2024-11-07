@@ -1,20 +1,21 @@
 #include "../include/stdint.h"
 #include "../include/stdbool.h"
 #include "../include/stdio.h"
+#include "../include/util.h"
 #include "idt.h"
 
 extern void idt_flush(uint32_t);
 
 #define IDT_SIZE 256
 
-struct idt_entry_struct idt_entries[IDT_SIZE];
-struct idt_ptr_struct idt_p;
+idt_entry_t idt_entries[IDT_SIZE];
+idt_ptr_t idt_p;
 
 void init_idt() {
-    idt_p.limit = (sizeof(struct idt_entry_struct) * IDT_SIZE) - 1;
+    idt_p.limit = (sizeof(idt_entry_t) * IDT_SIZE) - 1;
     idt_p.base = (uint32_t)&idt_entries;
 
-    memset(&idt_entries, 0, sizeof(struct idt_entry_struct) * IDT_SIZE);
+    memset(&idt_entries, 0, sizeof(idt_entry_t) * IDT_SIZE);
 
     // PICs
     // 0x20 commands and 0x21 data  [master]
@@ -99,6 +100,8 @@ void set_idt_gate(uint8_t num, uint32_t base, union idt_segment_selector_union s
     idt_entries[num].offset_high = (base >> 16) & 0xFFFF;
     idt_entries[num].selector = selector.selector_value;
     idt_entries[num].flags = flags.flags_value;
+
+    // print_idt(idt_entries[num]);
 }
 
 const char* exception_messages[] = {

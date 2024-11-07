@@ -6,8 +6,8 @@ extern void tss_flush();
 
 #define GDT_TABLE_SIZE 6
 
-gdt_entry gdt_entries[GDT_TABLE_SIZE];
-gdt_ptr gdt_p;
+gdt_entry_t gdt_entries[GDT_TABLE_SIZE];
+gdt_ptr_t gdt_p;
 struct tss_entry_struct tss_entry;
 
 void init_gdt() {

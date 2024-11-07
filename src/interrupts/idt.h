@@ -1,5 +1,7 @@
+#pragma once
+
 #include "../include/stdint.h"
-#include "../include/util.h"
+#include "../include/common.h"
 
 typedef enum {
     IDT_GATE_TYPE_TASK = 0x5,
@@ -7,7 +9,7 @@ typedef enum {
     IDT_GATE_TYPE_16_TRAP = 0x7,
     IDT_GATE_TYPE_32_INTERRUPT = 0xE,
     IDT_GATE_TYPE_32_TRAP = 0xF,
-} idt_gate_type;
+} idt_gate_type_t;
 
 struct idt_entry_flags_struct {
     uint8_t gate_type : 4;  // the type of gate this interrupt represents [idt_gate_type]
@@ -15,10 +17,23 @@ struct idt_entry_flags_struct {
     uint8_t DPL : 2;        // allowed cpu privilege level to access this interrupt
     uint8_t P : 1;          // present bit, must be 1 for the descriptor to be valid
 } __attribute__((packed));
+typedef struct idt_entry_flags_struct idt_entry_flags_t;
 
 union idt_flags_union {
     uint8_t flags_value;
     struct idt_entry_flags_struct flags;
+} __attribute__((packed));
+
+struct idt_entry_segment_selector_struct {
+    uint16_t RPL : 2;   // privilege level
+    uint16_t TI : 1;    // 0 -> gdt, 1 -> ldt
+    uint16_t index : 13;// index of gdt or ldt entry
+} __attribute__((packed));
+typedef struct idt_entry_segment_selector_struct idt_entry_segment_selector_t;
+
+union idt_segment_selector_union {
+    uint16_t selector_value;
+    struct idt_entry_segment_selector_struct selector;
 } __attribute__((packed));
 
 struct idt_entry_struct {
@@ -28,22 +43,13 @@ struct idt_entry_struct {
     uint8_t flags;          // [idt_entr_flags_struct]
     uint16_t offset_high;
 } __attribute__((packed));
+typedef struct idt_entry_struct idt_entry_t;
 
 struct idt_ptr_struct {
     uint16_t limit;
     uint32_t base;
 } __attribute__((packed));
-
-struct idt_entry_segment_selector_struct {
-    uint16_t RPL : 2;   // privilege level
-    uint16_t TI : 1;    // 0 -> gdt, 1 -> ldt
-    uint16_t index : 13;// index of gdt or ldt entry
-} __attribute__((packed));
-
-union idt_segment_selector_union {
-    uint16_t selector_value;
-    struct idt_entry_segment_selector_struct selector;
-} __attribute__((packed));
+typedef struct idt_ptr_struct idt_ptr_t;
 
 void init_idt();
 void set_idt_gate(uint8_t num, uint32_t base, union idt_segment_selector_union selector, union idt_flags_union flags);
